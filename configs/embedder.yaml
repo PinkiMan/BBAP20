@@ -1,0 +1,41 @@
+train_parameters:
+  learning_rate: 1e-4
+  epochs: 100
+  batch_size: 64
+  test_ratio: 0.1
+  weight_decay: 0.01
+  lr_drop_factor: 0.5
+  lr_drop_patience: 3
+  lr_drop_min: 1e-8
+  initial_temperature: 0.2
+  temp_min: 0.005
+  temp_max: 0.5
+
+directory:
+  model_path: "data/embedder/models/model_28.pth"
+  checkpoint_dir: "data/embedder/checkpoints/28"
+  dataset_dir: "data/processed/pairs_meta_all/"
+  dataset_dir_train: "data/processed/train/"
+  dataset_dir_validation: "data/processed/validation/"
+  tensorboard_dir: "data/embedder/tensor_boards/28"
+
+dataset_parameters:
+  dataset_size: +.inf
+  sigma: 1.5
+
+model_parameters:
+  embedding_dim: 2048
+  load_model: False
+
+augments:
+  satellite_map_augment_max_angle: 5
+  min_brightness_ratio: 0.7
+  max_brightness_ratio: 1.3
+  min_contrast_ratio: 0.7
+  max_contrast_ratio: 1.3
+  min_saturation_ratio: 0.7
+  max_saturation_ratio: 1.3
+  noise_ratio: 0.01
+  heightmap_augment_max_angle: 5
+  radial_black_pixels_prob: 1
+  radial_drop_prob: 0.85
