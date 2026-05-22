@@ -5,8 +5,6 @@ __created__ = "22/05/2026"
 __date__ = "22/05/2026"
 __status__ = "Prototype"
 __version__ = "0.1.0"
-__copyright__ = ""
-__license__ = ""
 __credits__ = []
 
 """
