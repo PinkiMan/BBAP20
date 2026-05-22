@@ -1,0 +1,14 @@
+laspy==2.7.0
+matplotlib==3.10.9
+numpy==2.4.6
+opencv_python==4.13.0.90
+opencv_python==4.13.0.92
+Pillow==12.2.0
+PyYAML==6.0.3
+Requests==2.34.2
+torch==2.7.1+cu118
+torch==2.12.0+cu132
+torchvision==0.22.1+cu118
+torchvision==0.27.0+cu132
+tqdm==4.67.1
+tqdm==4.67.3
