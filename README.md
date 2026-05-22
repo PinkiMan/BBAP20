@@ -22,7 +22,7 @@ BBAP20/
 │   └── localizer.yaml
 ├── data/                     # Local data storage (ignored by git)
 │   ├── dataset/              # Meta files, raw TIFF/LAZ data, and processed image pairs
-│   │   ├── meta_files/       # Downloaded .meta4 files
+│   │   ├── meta_files/       # Downloaded .meta4 files (paste here)
 │   │   ├── processed/        # Cropped and aligned image patches
 │   │   │   ├── test/
 │   │   │   ├── train/
@@ -31,26 +31,25 @@ BBAP20/
 │   │       ├── test/
 │   │       ├── train/
 │   │       └── validation/
-│   ├── embedder/             # Embedder artifacts
+│   ├── embedder/             # Embedder
 │   │   ├── checkpoints/      # Saved training checkpoints
 │   │   ├── models/           # Best saved models (.pth)
 │   │   └── tensor_boards/    # TensorBoard logging events
-│   ├── localizer/            # Localizer artifacts
-│   │   ├── checkpoints/
-│   │   ├── models/
-│   │   └── tensor_boards/
+│   ├── localizer/            # Localizer
+│   │   ├── checkpoints/      
+│   │   ├── models/           
+│   │   └── tensor_boards/    
 │   └── results/              # Output evaluation results and visualizations
 ├── scripts/                  # High-level execution scripts for the entire pipeline
-│   ├── wandb/                # Weights & Biases synchronization logs
-│   ├── 00_meta_extractor.py  # Extracts URLs and downloads raw data from .meta4 files
-│   ├── 01_prepare_data.py    # Processes raw files into cropped & aligned height/satellite maps
-│   ├── 02_train_embedder.py  # Global Place Recognition training script
-│   ├── 03_train_localizer.py # Local Pose Estimation training script
-│   ├── 04_test_embedder.py   # Embedder evaluation (Top-K accuracy)
-│   └── 05_test_localizer.py  # Localizer evaluation (cross-correlation)
+│   ├── 00_meta_extractor.py  # Extracts URLs and downloads raw data from .meta4 files placed in /data/dataset/meta_files
+│   ├── 01_prepare_data.py    # Processes raw files into cropped & aligned height/satellite map pairs
+│   ├── 02_train_embedder.py  # Embedder training script
+│   ├── 03_train_localizer.py # Localizer training script
+│   ├── 04_test_embedder.py   # Embedder evaluation
+│   └── 05_test_localizer.py  # Localizer evaluation
 ├── src/                      # Core source code modules
 │   ├── embedder/             # Embedder module
-│   │   ├── model.py          # Network architecture (e.g., Siamese network)
+│   │   ├── model.py          # Network architecture
 │   │   ├── test.py           # Evaluation logic
 │   │   └── train.py          # Training loop logic
 │   ├── loader/               # Data loading module
@@ -61,20 +60,20 @@ BBAP20/
 │   │   ├── ranker.py         # Cross-correlation and probability map generation
 │   │   ├── test.py           # Localizer evaluation logic
 │   │   └── train.py          # Localizer training loop
-│   ├── preprocessor/         # Raw data parsing tools
+│   ├── preprocessor/         # Raw data processing tools
 │   │   ├── laz_to_heightmap.py     # Point cloud to 2D elevation map conversion
 │   │   └── tif_to_satellite_map.py # Orthophoto patching and alignment
 │   └── shared/               # Shared utilities
 │       ├── trainer.py        # Base trainer classes
 │       ├── utils.py          # General helper functions
-│       └── wrappers.py       # Model/data wrappers
+│       └── wrappers.py       # Wrappers
 └── README.md                 # Project documentation
 ```
 
 # Installation and Requirements
 The project is written in Python (tested on version 3.12) and utilizes the PyTorch framework. To install the required dependencies, run:
 ```
-git clone [https://github.com/PinkiMan/BBAP20.git](https://github.com/PinkiMan/BBAP20.git)
+git clone https://github.com/PinkiMan/BBAP20.git
 cd BBAP20
 pip install -r requirements.txt
 ```
@@ -87,22 +86,22 @@ _(It is highly recommended to use a virtual environment, like venv)._
 4. Obtain Metadata: Download the generated .meta4 (Metalink) files for both modalities and place them into data/dataset/meta_files/.
 5. Download Raw Data: Run the extraction script: 
 ```
-python [scripts/00_meta_extractor.py](./scripts/00_meta_extractor.py)
+python scripts/00_meta_extractor.py
 ```
 6. Prepare Dataset: The following script aligns the raw data (TIFF and LAZ), crops them into the required patches, and automatically splits them into `train`, `validation`, and `test` sets:
 ```
-python [scripts/01_prepare_data.py](./scripts/01_prepare_data.py)
+python scripts/01_prepare_data.py
 ```
 
 # Model Training
 Once the dataset is prepared, you can start the training process. Hyperparameters can be adjusted in the configs/ directory.
 To train the **Embedder** (Global Place Recognition) using contrastive InfoNCE loss:
 ```
-python [scripts/02_train_embedder.py](./scripts/02_train_embedder.py)
+python scripts/02_train_embedder.py
 ```
 To train the **Localizer** (Local Pose Estimation) using dense cross-correlation:
 ```
-python [scripts/03_train_localizer.py](./scripts/03_train_localizer.py)
+python scripts/03_train_localizer.py
 ```
 Checkpoints, models, and TensorBoard logs will be automatically saved to `data/embedder/` and `data/localizer/` respectively.
 
@@ -110,11 +109,22 @@ Checkpoints, models, and TensorBoard logs will be automatically saved to `data/e
 To test the trained models on the test set or external data, use the provided test scripts.
 Evaluate the **Embedder** (Top-K accuracy):
 ```
-python [scripts/04_test_embedder.py](./scripts/04_test_embedder.py)
+python scripts/04_test_embedder.py
 ```
 Evaluate the **Localizer** (Cross-correlation and Heatmap generation):
 ```
-python [scripts/05_test_localizer.py](./scripts/05_test_localizer.py)
+python scripts/05_test_localizer.py
 ```
 Evaluation scripts automatically generate visual samples of the predicted 2D probability heatmaps and bounding boxes into the `data/results/` directory (enable in code).
+
+# Data & Pre-trained Models
+To easily reproduce the results presented in the thesis without running the training processes, you can download a sample dataset and the pre-trained weights.
+* **[Download Sample Dataset and Pre-trained models](#)**
+
+Simply extract/replace the downloaded folder into the `data/` directory following the repository structure.
+
+# Evaluation
+After downloading the dataset and the pre-trained models, the evaluation scripts [04_test_embedder.py](./scripts/04_test_embedder.py) and [05_test_localizer.py](./scripts/05_test_localizer.py) are ready to run out of the box (default set to using the downloaded `model_0.pth` model). 
+
+If you wish to evaluate your own custom-trained models, you must update the model path in the `main` block of the respective testing script.
 
