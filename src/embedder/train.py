@@ -21,6 +21,7 @@ import torch
 import pathlib
 from tqdm import tqdm
 from torch.utils.tensorboard import SummaryWriter
+from pathlib import Path
 
 from src.shared.trainer import PytorchTrainer
 from src.embedder.model import CrossModalNetwork, CrossModalNetwork2, CrossModalNetwork3
@@ -57,7 +58,7 @@ class Trainer(PytorchTrainer):
     @staticmethod
     @monitor
     def __setup_config():
-        directory = project_directory()
+        directory = project_directory().parent
         with open(directory/pathlib.Path("configs/embedder.yaml"), 'r') as ymlfile:
             cfg = yaml.safe_load(ymlfile)
 
@@ -75,7 +76,7 @@ class Trainer(PytorchTrainer):
     @staticmethod
     @monitor
     def __load_dataset(cfg):
-        directory = project_directory()
+        directory = project_directory(Path("data/"))
         dataset_dir_train = directory / cfg['directory']['dataset_dir_train']
         dataset_dir_validation = directory / cfg['directory']['dataset_dir_validation']
         sigma = cfg['dataset_parameters']['sigma']
@@ -92,7 +93,8 @@ class Trainer(PytorchTrainer):
                                       noise_ratio=cfg['augments']['noise_ratio'],
                                       heightmap_augment_max_angle=cfg['augments']['heightmap_augment_max_angle'],
                                       radial_drop_prob=cfg['augments']['radial_drop_prob'],
-                                      radial_black_pixels_prob=cfg['augments']['radial_black_pixels_prob'],)
+                                      radial_black_pixels_prob=cfg['augments']['radial_black_pixels_prob'],
+                                      satellite_map_crop=cfg['augments']['satellite_map_crop'],)
 
         """dataset_loader_validation = Loader(dataset_dir_validation, sigma=sigma, augment_data=True, max_data_size=cfg['dataset_parameters']['dataset_size'],
                                 satellite_map_size=(256, 256), height_map_size=(128, 128),
@@ -275,6 +277,7 @@ class Trainer(PytorchTrainer):
                 "heightmap_augment_max_angle": self.config['augments']['heightmap_augment_max_angle'],
                 "radial_black_pixels_prob": self.config['augments']['radial_black_pixels_prob'],
                 "radial_drop_prob": self.config['augments']['radial_drop_prob'],
+                "satellite_map_crop": self.config['augments']['satellite_map_crop'],
             }
         )
 

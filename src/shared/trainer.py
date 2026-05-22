@@ -17,6 +17,7 @@ import os.path
 import torch
 import torch.optim as optim
 from torch.utils.data import Subset
+from pathlib import Path
 
 from src.shared.utils import project_directory
 from src.shared.wrappers import monitor
@@ -68,7 +69,7 @@ class PytorchTrainer:
         self.lr_drop_patience = int(cfg['train_parameters']['lr_drop_patience'])
         self.lr_drop_min = float(cfg['train_parameters']['lr_drop_min'])
 
-        directory = project_directory()
+        directory = project_directory(Path("data"))
 
         self.model_path = directory / cfg['directory']['model_path']
         self.checkpoint_path = directory / cfg['directory']['checkpoint_dir']

@@ -1,13 +1,13 @@
 directory:
   pair_dir: "data/processed/pairs_meta"
-  dataset_dir: "data/processed/pairs_meta_all/"
-  dataset_dir_train: "data/processed/train/"
-  dataset_dir_validation: "data/processed/validation/"
+  dataset_dir: "dataset/processed/train/"
+  dataset_dir_train: "dataset/processed/train/"
+  dataset_dir_validation: "dataset/processed/validation/"
   satellite_map_suffix: "-satellite_map.png"
   heightmap_suffix: "-height_map.png"
-  model_path: "data/localizer/model_6.pth"
-  checkpoint_dir: "data/localizer/checkpoints_6/"
-  tensorboard_dir: "data/localizer/tensor_board_6/"
+  model_path: "localizer/models/model_1.pth"
+  checkpoint_dir: "localizer/checkpoints/1"
+  tensorboard_dir: "localizer/tensor_boards/1"
   dir_name: "data/localizer/"
 
 train_parameters:

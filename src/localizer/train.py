@@ -52,16 +52,14 @@ def write_epoch_data(writer, epoch, loss, epoch_duration, distance, probability,
 
 class Trainer(PytorchTrainer):
     def __init__(self):
-        directory = project_directory()
+        directory = project_directory().parent
         with open(directory / 'configs/localizer.yaml', 'r') as ymlfile:
             cfg = yaml.safe_load(ymlfile)
         sigma = cfg['train_parameters']['sigma']
-        dataset_dir = directory / cfg['directory']['pair_dir']
+
         embedding_dim = cfg['model_parameters']['embedding_dim']
+        dataset_dir_train = directory / "data" / cfg['directory']['dataset_dir_train']
 
-        dataset_dir_train = directory / cfg['directory']['dataset_dir_train']
-
-        dataset_loader = Loader(dataset_dir, sigma=sigma, augment_data=True, max_data_size=-1)
         dataset_loader_train = Loader(dataset_dir_train, sigma=sigma, augment_data=True, heatmap_size=(65,65),
                                       max_data_size=cfg['dataset_parameters']['dataset_size'],
                                       satellite_map_size=(256, 256), height_map_size=(128, 128),
@@ -78,7 +76,7 @@ class Trainer(PytorchTrainer):
                                       radial_drop_prob=cfg['augments']['radial_drop_prob'],
                                       radial_black_pixels_prob=cfg['augments']['radial_black_pixels_prob'], )
 
-        dataset_dir_validation = directory / cfg['directory']['dataset_dir_validation']
+        dataset_dir_validation = directory / "data" / cfg['directory']['dataset_dir_validation']
 
         dataset_loader_validation = Loader(dataset_dir_validation, sigma=sigma, augment_data=True, heatmap_size=(65,65),
                                            max_data_size=cfg['dataset_parameters']['dataset_size'],

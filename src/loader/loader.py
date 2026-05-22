@@ -36,7 +36,7 @@ class Loader(torch.utils.data.Dataset):
                  sigma: float = 1.5, augment_data: bool = False, satellite_map_augment_max_angle=10, min_brightness_ratio=0.7,
                  max_brightness_ratio=1.3, min_contrast_ratio=0.7, max_contrast_ratio=1.3, min_saturation_ratio=0.7,
                  max_saturation_ratio=1.3, noise_ratio=0.01, heightmap_augment_max_angle=10, radial_black_pixels_prob=0.9,
-                 radial_drop_prob=0.85):
+                 radial_drop_prob=0.85, satellite_map_crop=False):
 
         self.height_map_size = height_map_size
         self.satellite_map_size = satellite_map_size
@@ -72,6 +72,8 @@ class Loader(torch.utils.data.Dataset):
         self.__heightmap_augment_max_angle: float = heightmap_augment_max_angle
         self.__radial_black_pixels_prob: float = radial_black_pixels_prob
         self.__radial_drop_prob:float = radial_drop_prob
+
+        self.__satellite_map_crop:bool = satellite_map_crop
 
 
         self.dataset_directory = dataset_directory
@@ -218,10 +220,14 @@ class Loader(torch.utils.data.Dataset):
         tensor = torch.clamp(tensor, 0, 1)
 
         # shift augmentation
-        _, H, W = tensor.shape
-        x = random.randint(0, int(self.satellite_map_size[0]/2) - 1)
-        y = random.randint(0, int(self.satellite_map_size[1]/2) - 1)
-        tensor = self.safe_crop_center(tensor, x, y, self.satellite_map_size[0])
+        if self.__satellite_map_crop:
+            _, H, W = tensor.shape
+            x = random.randint(0, int(self.satellite_map_size[0]/2) - 1)
+            y = random.randint(0, int(self.satellite_map_size[1]/2) - 1)
+            tensor = self.safe_crop_center(tensor, x, y, self.satellite_map_size[0])
+        else:
+            _, H, W = tensor.shape
+            x,y = H // 2, W // 2
 
         return tensor, (x, y)
 

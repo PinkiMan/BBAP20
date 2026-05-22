@@ -134,21 +134,22 @@ def visualize_results(query_lidar, sat_db, best_indices, best_scores, query_sat,
 
     number = 4
 
-    fig.canvas.draw()
-    renderer = fig.canvas.get_renderer()
-    inv_trans = fig.dpi_scale_trans.inverted()
-
     directory = project_directory(Path("data/results/embedder"))
+
+    """fig.canvas.draw()
+    renderer = fig.canvas.get_renderer()
+    inv_trans = fig.dpi_scale_trans.inverted()"""
 
     axes[0].imshow(lidar_2d, cmap='gray')
     axes[0].axis('off')
-    bbox = axes[0].get_tightbbox(renderer).transformed(inv_trans)
-    fig.savefig(directory/f"heightmap-{number}.png", bbox_inches=bbox, dpi=300)
 
     axes[1].imshow(query_sat.permute(1, 2, 0).numpy())
     axes[1].axis('off')
+
+    """bbox = axes[0].get_tightbbox(renderer).transformed(inv_trans)
+    fig.savefig(directory / f"heightmap-{number}.png", bbox_inches=bbox, dpi=300)
     bbox = axes[1].get_tightbbox(renderer).transformed(inv_trans)
-    fig.savefig(directory/f"gt-ortophoto-{number}.png", bbox_inches=bbox, dpi=300)
+    fig.savefig(directory/f"gt-ortophoto-{number}.png", bbox_inches=bbox, dpi=300)"""
 
     for i, idx in enumerate(best_indices):
         score = best_scores[i].item()
@@ -161,8 +162,9 @@ def visualize_results(query_lidar, sat_db, best_indices, best_scores, query_sat,
         axes[i + 2].axis('off')
 
         if i<3:
-            bbox = axes[i + 2].get_tightbbox(renderer).transformed(inv_trans)
-            fig.savefig(directory/f"gt-ortophoto_{i}-{number}.png", bbox_inches=bbox, dpi=300)
+            """bbox = axes[i + 2].get_tightbbox(renderer).transformed(inv_trans)
+            fig.savefig(directory/f"gt-ortophoto_{i}-{number}.png", bbox_inches=bbox, dpi=300)"""
+            pass
 
     plt.tight_layout()
     plt.show()
