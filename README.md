@@ -119,7 +119,7 @@ Evaluation scripts automatically generate visual samples of the predicted 2D pro
 
 # Data & Pre-trained Models
 To easily reproduce the results presented in the thesis without running the training processes, you can download a sample dataset and the pre-trained weights.
-* **[Download Sample Dataset and Pre-trained models](#)**
+* **[Download Sample Dataset and Pre-trained models](https://drive.google.com/file/d/1g_8Kd95QRea6bLTGWnZBVZqOXo0iTSgn/view?usp=sharing)**
 
 Simply extract/replace the downloaded folder into the `data/` directory following the repository structure.
 
